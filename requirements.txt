@@ -1,0 +1,5 @@
+anthropic
+python-docx
+gspread
+google-auth-oauthlib
+google-api-python-client

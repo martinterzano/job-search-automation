@@ -1,0 +1,42 @@
+# Credenciales - NUNCA versionar
+.env
+
+# Credenciales Google OAuth - NUNCA versionar
+assets/google/credentials.json
+assets/google/token.json
+
+# Materiales personales - no versionar
+assets/cv/
+assets/cover_letters_examples/
+assets/projects/
+
+# Archivos intermedios regenerables
+.tmp/
+
+# Outputs generados (opcional: versionar solo resultados finales)
+jobs_parsed/
+outputs/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

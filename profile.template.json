@@ -1,0 +1,124 @@
+{
+  "_setup_instructions": [
+    "1. Copy this file as profile.json (remove this _setup_instructions field)",
+    "2. Fill in all fields marked with YOUR_... or [...] placeholders",
+    "3. Remove all _comment fields from the final profile.json",
+    "4. Run /setup validate to verify completeness",
+    "   OR run /setup profile to have Claude guide you through filling this interactively"
+  ],
+
+  "name": "YOUR_FULL_NAME",
+  "_comment_name": "e.g., 'Jane Smith'",
+
+  "email": "YOUR_EMAIL@example.com",
+  "phone": "YOUR_PHONE_OPTIONAL",
+  "linkedin": "https://linkedin.com/in/YOUR_HANDLE",
+  "location": "YOUR_CITY, YOUR_COUNTRY",
+  "nationality": ["YOUR_NATIONALITY"],
+  "_comment_nationality": "List all nationalities/work authorizations. e.g., ['US Citizen', 'EU Citizen']",
+
+  "years_of_experience": "5+",
+  "_comment_years": "Use exact phrasing you'll use in CVs. Always consistent.",
+
+  "summary": "YOUR_PROFESSIONAL_SUMMARY_1_PARAGRAPH",
+  "_comment_summary": "How you describe yourself in 2-3 sentences. Will be used as base for CV summaries.",
+
+  "skills": [
+    "Python", "SQL",
+    "YOUR_ML_FRAMEWORK_1", "YOUR_ML_FRAMEWORK_2",
+    "YOUR_CLOUD_PLATFORM",
+    "YOUR_OTHER_SKILLS"
+  ],
+  "_comment_skills": "Only list skills you can defend in a technical interview. Remove anything you've only touched once.",
+
+  "learning_in_progress": [
+    "YOUR_SKILL_CURRENTLY_LEARNING"
+  ],
+  "_comment_learning": "Skills you're actively building but cannot claim proficiency. Will be framed as 'building experience' in CVs.",
+
+  "experience": [
+    {
+      "title": "YOUR_JOB_TITLE",
+      "company": "COMPANY_NAME",
+      "description": "ONE_LINE_COMPANY_DESCRIPTION — LOCATION",
+      "period": "Month YYYY – Present",
+      "bullets": [
+        "KEY_ACHIEVEMENT_1 (include scale, tools, outcome)",
+        "KEY_ACHIEVEMENT_2",
+        "KEY_ACHIEVEMENT_3"
+      ]
+    },
+    {
+      "title": "YOUR_PREVIOUS_JOB_TITLE",
+      "company": "PREVIOUS_COMPANY_NAME",
+      "description": "ONE_LINE_COMPANY_DESCRIPTION — LOCATION",
+      "period": "Month YYYY – Month YYYY",
+      "bullets": [
+        "KEY_ACHIEVEMENT_1",
+        "KEY_ACHIEVEMENT_2"
+      ]
+    }
+  ],
+  "_comment_experience": "List all positions, most recent first. Bullets are the selection pool for CV adaptation — the more detail, the better.",
+
+  "projects": [
+    {
+      "name": "YOUR_PROJECT_NAME",
+      "year": "YYYY",
+      "context": "Personal Project | Academic | Professional",
+      "description": "BRIEF_DESCRIPTION — what you built, with what tools, and what outcome.",
+      "ownership": "100% | Lead | Contributor (~XX%)",
+      "production": true,
+      "tech_stack": ["Python", "YOUR_TOOL_1", "YOUR_TOOL_2"]
+    }
+  ],
+  "_comment_projects": "Include personal projects, academic capstones, side projects. Work projects go in experience, not here.",
+
+  "education": [
+    {
+      "degree": "EXACT_DEGREE_NAME",
+      "_comment_degree": "Use exact name as it appears on your diploma. Never abbreviate (e.g., NOT 'MBA' if it's 'Executive Master in Business Analytics')",
+      "institution": "INSTITUTION_NAME",
+      "year": "YYYY",
+      "relevant_coursework": ["OPTIONAL_RELEVANT_COURSES"]
+    }
+  ],
+
+  "certifications": [
+    {
+      "name": "CERTIFICATION_NAME",
+      "issuer": "ISSUER",
+      "year": "YYYY",
+      "expiry": "YYYY or null"
+    }
+  ],
+
+  "languages": [
+    {"language": "YOUR_NATIVE_LANGUAGE", "level": "Native"},
+    {"language": "English", "level": "Fluent | Professional | Basic"}
+  ],
+
+  "preferences": {
+    "target_roles": ["Senior Data Scientist", "ML Engineer", "AI Engineer"],
+    "_comment_roles": "Roles you're actively targeting. Used in pre-screening logic.",
+
+    "target_industries": ["fintech", "healthtech", "saas", "insurtech", "retail"],
+    "_comment_industries": "Preferred industries. Used in fit scoring bonuses. Use lowercase slugs.",
+
+    "seniority": ["senior", "mid"],
+
+    "modality": "remote | hybrid | on-site",
+    "preferred_tools": ["Python", "SQL", "YOUR_CLOUD"],
+
+    "min_salary": 150000,
+    "_comment_salary": "Minimum acceptable salary as a number. Used in auto-skip logic.",
+
+    "currency": "USD",
+    "_comment_currency": "Currency for salary comparisons. Use 'USD', 'EUR', 'GBP', etc.",
+
+    "sponsorship_required": false,
+    "_comment_sponsorship": "Set to true if you need visa sponsorship. Enables sponsorship check in job-analysis.",
+
+    "avoid": ["pure frontend", "non-data roles", "staff augmentation"]
+  }
+}
