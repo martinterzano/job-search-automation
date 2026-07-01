@@ -50,6 +50,10 @@ cp .env.example .env
 
 ## Setup (first time)
 
+Two options — pick whichever fits your style:
+
+### Option A — Interactive onboarding (recommended)
+
 Open the project folder in Claude Code and run:
 
 ```
@@ -61,6 +65,17 @@ This guided flow creates:
 2. `assets/knowledge_base/writing_voice.md` — your voice and tone synthesized from your past writing
 3. `assets/knowledge_base/self_framing.md` — honest assessment of your strengths and gaps
 4. `assets/knowledge_base/project_depth.md` — technical depth for each project
+
+### Option B — Manual setup
+
+Prefer to edit files directly? Every file is self-documented:
+
+1. Copy `profile.template.json` → `profile.json` and fill in your data. Each field has a `_comment` explaining what to put there.
+2. Open `assets/knowledge_base/writing_voice.md`, `self_framing.md`, and `project_depth.md` — each file contains instructions at the top explaining what to write and how to structure it.
+
+Both options produce the same result. Option B is faster if you already have your information ready.
+
+---
 
 Then add your base CV to `assets/cv/`:
 - Name it exactly `cv_base_en.docx` (English) and `cv_base_es.docx` (Spanish, optional)
