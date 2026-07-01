@@ -1,96 +1,86 @@
 """
 fix_projects_batch.py
-Removes professional projects from cv_*.json files and sets correct Personal Projects entry.
-Regenerates .docx for each fixed file.
-Usage: python fix_projects_batch.py
+Utility: scan all cv_*.json files in outputs/ and remove professional work projects
+that were incorrectly placed in the Personal Projects section. Replaces them with
+the correct personal project entry from profile.json.
+
+Usage: python fix_projects_batch.py [--dry-run]
+
+HOW TO CUSTOMIZE:
+  1. Update PROFESSIONAL_KW with keywords from your professional project names/descriptions.
+     These are used to detect projects that belong in the Experience section, not Projects.
+  2. Run with --dry-run first to see what would change.
+  3. The script reads your personal projects from profile.json automatically.
 """
 
 import json
 import glob
-import os
-import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).parents[4]
+ROOT   = Path(__file__).parents[4]
 SCRIPT = Path(__file__).parent / "generate_cv_docx.py"
 
-PROFESSIONAL_KW = [
-    "pltv", "lapse", "delve", "balun", "balún", "credigo", "turnover",
-    "esade", "capstone", "policyholders", "asegurador", "churn prediction",
-    "credit scoring", "customer segmentation", "valor de vida", "lifetime value",
-    "cancelaci", "predictive lifetime", "early lapse", "employee turnover",
-    "predicción de rotaci", "rotación de empleados", "pro bono",
-    "segmentación", "churn (bal",
-]
 
-# Folder name substrings that indicate an AI/ML engineering role
-HIGH_RELEVANCE_SUBSTRINGS = [
-    "aily_labs", "albatrossai", "alira_health", "crossing_hurdles",
-    "frekuent", "hk_smart_tech", "joveo", "oliver_bernard",
-    "product_madness", "zoolatech",
-]
-
-JSA_EN_DETAILED = {
-    "name": "Job Search Automation Pipeline",
-    "year": "2025–2026",
-    "context": "Personal Project",
-    "bullets": [
-        "Designed and built a multi-agent orchestration system using Claude Code and the Anthropic Python SDK: an Orchestrator coordinates specialized agents (Analyzer, CV Adapter, Cover Letter Writer, Critic/QA), each with defined tool schemas, inputs, and outputs.",
-        "Implemented semantic fit scoring (Must/Should/Nice weighted algorithm), JSON-based document templating with dynamic field injection, and HITL approval gates before each pipeline stage.",
-        "Integrated Google Drive API for application tracking and a Chart.js analytics dashboard; batch mode processes full job posting queue end-to-end with error recovery.",
-    ],
-}
-
-JSA_EN_COMPACT = {
-    "name": "Job Search Automation Pipeline",
-    "year": "2025–2026",
-    "context": "Personal Project",
-    "description": "Built a multi-agent automation system using Claude Code and the Anthropic Python SDK to process job applications end-to-end: parsing postings, scoring fit (Must/Should/Nice), adapting CV, and generating cover letters, with HITL review gates and Google Sheets tracking.",
-}
-
-JSA_ES_DETAILED = {
-    "name": "Pipeline de Automatización de Búsqueda de Empleo",
-    "year": "2025–2026",
-    "context": "Proyecto Personal",
-    "bullets": [
-        "Diseñé y construí un sistema de orquestación multi-agente con Claude Code y el SDK de Python de Anthropic; un Orquestador coordina agentes especializados, cada uno con schemas de herramientas, inputs y outputs definidos.",
-        "Implementé scoring semántico de fit (algoritmo ponderado Must/Should/Nice), generación dinámica de documentos desde templates JSON y puertas de aprobación HITL antes de cada etapa.",
-        "Integré la API de Google Drive para tracking de postulaciones y un dashboard analítico con Chart.js; modo batch procesa la cola completa de ofertas de forma autónoma.",
-    ],
-}
-
-JSA_ES_COMPACT = {
-    "name": "Pipeline de Automatización de Búsqueda de Empleo",
-    "year": "2025–2026",
-    "context": "Proyecto Personal",
-    "description": "Construí un sistema multi-agente con Claude Code y el SDK de Anthropic para automatizar el proceso completo de postulaciones: parseo de ofertas, scoring de fit (Must/Should/Nice), adaptación de CV y generación de cover letters, con revisión HITL y tracking en Google Sheets.",
-}
+def load_profile() -> dict:
+    profile_path = ROOT / "profile.json"
+    if not profile_path.exists():
+        raise FileNotFoundError("profile.json not found — run /setup profile first")
+    with open(profile_path, encoding="utf-8") as f:
+        return json.load(f)
 
 
-def is_professional(project: dict) -> bool:
+def get_personal_projects(profile: dict) -> list[dict]:
+    """Return projects marked as personal (context != work/professional)."""
+    personal = []
+    for p in profile.get("projects", []):
+        ctx = p.get("context", "").lower()
+        if "personal" in ctx or "side" in ctx or "open source" in ctx:
+            personal.append(p)
+    return personal
+
+
+def build_professional_keywords(profile: dict) -> list[str]:
+    """
+    Auto-build keyword list from professional projects in profile.json.
+    Extend EXTRA_KW manually with any additional terms you want to catch.
+    """
+    EXTRA_KW: list[str] = []  # add your own keywords here if needed
+
+    keywords = list(EXTRA_KW)
+    for p in profile.get("projects", []):
+        ctx = p.get("context", "").lower()
+        if "personal" not in ctx and "side" not in ctx:
+            name = p.get("name", "").lower()
+            if name:
+                keywords.append(name[:20])
+    employer = profile.get("experience", [{}])[0].get("company", "").lower()
+    if employer:
+        keywords.append(employer[:20])
+    return list(set(kw for kw in keywords if len(kw) > 3))
+
+
+def is_professional(project: dict, keywords: list[str]) -> bool:
     text = " ".join([
         project.get("name", ""),
         project.get("description", ""),
         project.get("context", ""),
         " ".join(project.get("bullets", [])),
     ]).lower()
-    return any(kw in text for kw in PROFESSIONAL_KW)
-
-
-def is_jsa(project: dict) -> bool:
-    name = project.get("name", "").lower()
-    return "job search" in name or "automatizaci" in name or "búsqueda" in name
-
-
-def get_relevance(folder: str) -> str:
-    folder_lower = folder.lower()
-    if any(kw in folder_lower for kw in HIGH_RELEVANCE_SUBSTRINGS):
-        return "high"
-    return "standard"
+    return any(kw in text for kw in keywords)
 
 
 def main():
+    dry_run = "--dry-run" in sys.argv
+
+    profile    = load_profile()
+    keywords   = build_professional_keywords(profile)
+    personal   = get_personal_projects(profile)
+
+    if not personal:
+        print("No personal projects found in profile.json. Nothing to do.")
+        sys.exit(0)
+
     pattern_ready   = str(ROOT / "outputs" / "ready"   / "*" / "cv_*.json")
     pattern_applied = str(ROOT / "outputs" / "applied"  / "*" / "cv_*.json")
     all_files = sorted(glob.glob(pattern_ready) + glob.glob(pattern_applied))
@@ -99,53 +89,47 @@ def main():
 
     for f in all_files:
         f_path = Path(f)
-        folder = f_path.parent.name
-
         with open(f_path, encoding="utf-8") as fp:
             data = json.load(fp)
 
         projects = data.get("projects", [])
-        has_problem = any(is_professional(p) for p in projects)
+        has_problem = any(is_professional(p, keywords) for p in projects)
 
         if not has_problem:
-            skipped.append(folder)
+            skipped.append(f_path.parent.name)
             continue
 
-        language  = data.get("language", "en")
-        relevance = get_relevance(folder)
+        if dry_run:
+            print(f"[DRY RUN] Would fix: {f_path.parent.name}")
+            processed.append(f_path.parent.name)
+            continue
 
-        if language == "es":
-            jsa = JSA_ES_DETAILED if relevance == "high" else JSA_ES_COMPACT
-        else:
-            jsa = JSA_EN_DETAILED if relevance == "high" else JSA_EN_COMPACT
-
-        data["projects"] = [jsa]
+        data["projects"] = personal
 
         with open(f_path, "w", encoding="utf-8") as fp:
             json.dump(data, fp, ensure_ascii=False, indent=2)
 
-        output_dir = str(f_path.parent)
+        import subprocess
         result = subprocess.run(
-            [sys.executable, str(SCRIPT), str(f_path), output_dir],
+            [sys.executable, str(SCRIPT), str(f_path), str(f_path.parent)],
             capture_output=True, text=True,
         )
 
-        tag = f"[{relevance}/{language}] {folder}"
+        tag = f_path.parent.name
         if result.returncode != 0:
             errors.append(f"{tag}: {result.stderr.strip()[:200]}")
         else:
             processed.append(tag)
 
-    print(f"\n=== Corregidos: {len(processed)} ===")
+    suffix = " (dry run)" if dry_run else ""
+    print(f"\n=== Fixed{suffix}: {len(processed)} ===")
     for p in processed:
         print(f"  OK  {p}")
 
-    print(f"\n=== Sin cambios: {len(skipped)} ===")
-    for s in skipped:
-        print(f"  --  {s}")
+    print(f"\n=== No changes: {len(skipped)} ===")
 
     if errors:
-        print(f"\n=== Errores: {len(errors)} ===")
+        print(f"\n=== Errors: {len(errors)} ===")
         for e in errors:
             print(f"  ERR {e}")
         sys.exit(1)

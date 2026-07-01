@@ -131,7 +131,7 @@ Record in `logs/cv_adaptation.log` with date, company, role, and fit_score.
 - Never explain to the recruiter why the experience is relevant to the role — show the experience and let the recruiter make the connection.
 - Eliminate any phrase containing: "directly applicable to", "aligned with", "which maps directly to", "equivalent to", "mirrors", "translates directly to", "analogous to [role context]", "relevant to this position", "directly relevant".
 - BAD: "Built a LightGBM model — directly applicable to the credit risk scoring this role requires"
-- GOOD: "Built a Lapse Prediction model (LightGBM) deployed in weekly batch scoring on cloud, scoring 1M+ records per run"
+- GOOD: "Built a churn prediction model (LightGBM) deployed in weekly batch scoring on cloud, scoring 1M+ records per run"
 
 ### Output language
 

@@ -192,7 +192,7 @@ INTERP_THEME_RULES = [
     ("Gap: LLM / GenAI enterprise",      r"gap.*llm|llm.*gap|genai.*profesional|personal.*no.*enterprise|hands-on.*llm.*gap"),
     ("Gap: Deep Learning (PyTorch/TF)",  r"gap.*pytorch|pytorch.*gap|tensorflow.*gap|deep\s*learning.*gap"),
     ("Gap: A/B Testing",                 r"gap.*a/b|a/b.*gap|experimentacion.*gap|testing.*gap|a/b.*core\s*gap"),
-    ("Fortaleza: GCP / producción ML",   r"produccion.*gcp|gcp.*encaja|cloud\s*composer.*encaja|gcp.*match|lapse.*encaja|pltv.*encaja|gcp.*prod"),
+    ("Fortaleza: GCP / producción ML",   r"produccion.*gcp|gcp.*encaja|cloud\s*composer.*encaja|gcp.*match|gcp.*prod|production.*gcp|gcp.*production"),
     ("Barrera: dominio específico",      r"barrera.*dominio|dominio.*claro|sector.*barrera|domain.*gap.*hard|especializacion.*sector"),
     ("Barrera: 7+ años hard",            r"barrera.*dura.*exp|7.*a[ñn]os.*requerido|barrera.*exp|7-8.*hard|8\+.*requerido|hard\s*blocker.*a[ñn]"),
     ("Gap: Spark / Big Data",            r"spark.*gap|gap.*spark|scala.*gap|pyspark.*gap|spark.*barrier"),

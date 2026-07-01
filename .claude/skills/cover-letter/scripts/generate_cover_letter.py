@@ -222,7 +222,6 @@ RESTRICCIONES DE FORMATO:
 - NO usar listas con "•" ni numeradas. Todo debe ser prosa corrida
 - NO usar clichés ni frases de plantilla de IA: "apasionado", "trabajo en equipo", "orientado a resultados", "proactivo", "actionable insights", "data-driven decisions", "leveraging", "seamless", "robust", "production-quality", "proven track record", "from day one", "I thrive in", "contribute meaningfully", "welcome the opportunity to discuss", "human-centered approach", "rigour and pragmatism"
 - NO usar primera persona más de 8 veces en total
-- El título académico del candidato es siempre "Executive Master in Business Analytics" — nunca "ESADE MBA", "MBA" ni variante
 - SÍ escribir en párrafos completos y fluidos, con transiciones naturales entre ideas
 - SÍ describir proyectos con tecnologías específicas y resultados concretos o métricas cuando estén disponibles
 - SÍ terminar con un llamado a la acción claro y directo — específico al rol, no una frase de plantilla
