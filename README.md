@@ -10,12 +10,7 @@ Drop a job posting URL or text, get a tailored CV and cover letter in minutes.
 
 Built during an active job search to test whether Claude Code agents could make the application process faster without reducing quality. Looking for a job is time-consuming. When you cherry-pick roles that genuinely fit you, you still run into constant friction: companies mislabelling roles, non-negotiable stack requirements that differ by one cloud provider, seniority bars set wrong for the actual day-to-day, or a role title that matches but a job description that doesn't. Filtering and applying at quality takes more effort than most people expect. The first version ran on the builder's own applications. It was designed as a template from the start because the logic is candidate-agnostic. All personal data lives in files that the pipeline reads but does not own.
 
-A job application pipeline has three distinct failure modes:
-- Wasted effort (spending two hours on an application for a role that would have been auto-screened in 30 seconds).
-- Low quality (a cover letter that sounds like every other cover letter because it was generated without context about the candidate).
-- Unadapted CV that never passes the ATS (Applicant Tracking System) filters that most companies use today.
-
-This pipeline targets all three.
+A job application pipeline has three distinct failure modes. The first is wasted effort (spending two hours on an application for a role that would have been auto-screened in 30 seconds). The second is low quality (a cover letter that sounds like every other cover letter because it was generated without context about the candidate). The third is an unadapted CV that never passes the ATS (Applicant Tracking System) filters that most companies use today. This pipeline targets all three.
 
 **Who it is for.** Anyone in active job search who receives enough volume to benefit from automation and wants to maintain a quality bar without doing it entirely by hand. The template ships with examples from a Data Science search, but the framework is role-agnostic — see *Adapting for your situation* at the end.
 
