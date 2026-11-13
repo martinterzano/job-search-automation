@@ -8,7 +8,7 @@ Drop a job posting URL or text, get a tailored CV and cover letter in minutes.
 
 ## What this is
 
-Built during an active job search to test whether Claude Code agents could make the application process faster without reducing quality. Looking for a job is time-consuming. When you cherry-pick roles that genuinely fit you, you still run into constant friction: companies mislabelling roles, non-negotiable stack requirements that differ by one cloud provider, seniority bars set wrong for the actual day-to-day, or a role title that matches but a job description that doesn't. Filtering and applying at quality takes more effort than most people expect. The first version ran on the builder's own applications. It was designed as a template from the start because the logic is candidate-agnostic. All personal data lives in files that the pipeline reads but does not own.
+Built during an active job search to test whether Claude Code agents could make the application process faster without reducing quality. Looking for a job is time-consuming. When you cherry-pick roles that genuinely fit you, you still run into constant friction: companies mislabeling roles, non-negotiable stack requirements that differ by one cloud provider, seniority bars set wrong for the actual day-to-day, or a role title that matches but a job description that doesn't. Filtering and applying at quality takes more effort than most people expect. The first version ran on the builder's own applications. It was designed as a template from the start because the logic is candidate-agnostic. All personal data lives in files that the pipeline reads but does not own.
 
 A job application pipeline has three distinct failure modes. The first is wasted effort (spending two hours on an application for a role that would have been auto-screened in 30 seconds). The second is low quality (a cover letter that sounds like every other cover letter because it was generated without context about the candidate). The third is an unadapted CV that never passes the ATS (Applicant Tracking System) filters that most companies use today. This pipeline targets all three.
 
@@ -21,8 +21,8 @@ A job application pipeline has three distinct failure modes. The first is wasted
 1. **Parses** job postings (URL or pasted text) and classifies requirements as Must / Should / Nice-to-Have
 2. **Scores** candidate fit (0–100) using a weighted algorithm with semantic aliases — "React" matches "frontend framework", "PostgreSQL" matches "relational database"
 3. **Pre-screens** in batch — auto-skips body shops, junior roles, off-stack positions, and flags borderline cases for your review before running the expensive pipeline
-4. **Adapts** your CV, prioritising the most relevant experience for each posting, grounded entirely in your `profile.json`
-5. **Generates** cover letters in your authentic voice, synthesised from samples of your real writing
+4. **Adapts** your CV, prioritizing the most relevant experience for each posting, grounded entirely in your `profile.json`
+5. **Generates** cover letters in your authentic voice, synthesized from samples of your real writing
 6. **Critiques** outputs automatically. Catches AI flags, fabrications, and rule violations. Proposes corrections in HITL mode; applies only non-negotiable fixes in AUTO mode
 7. **Tracks** everything in Google Sheets and generates an HTML analytics dashboard
 
@@ -43,7 +43,7 @@ All outputs go to `outputs/ready/{company}_{role}/` — CV (.docx + .pdf), cover
 
 ### Skills as bounded agents, not a monolith
 
-Each skill (`job-analysis`, `cv-adaptation`, `cover-letter`, `critic`) has its own `SKILL.md` with a complete, self-contained instruction set. They can run standalone (`/cv-adaptation Stripe "Senior DS"`) or be orchestrated in sequence by `apply-all`. The separation enforces a discipline: each agent has one job, a defined input schema, and a defined output schema. When something goes wrong, the fault is localised to one skill rather than hidden inside a single long prompt.
+Each skill (`job-analysis`, `cv-adaptation`, `cover-letter`, `critic`) has its own `SKILL.md` with a complete, self-contained instruction set. They can run standalone (`/cv-adaptation Stripe "Senior DS"`) or be orchestrated in sequence by `apply-all`. The separation enforces a discipline: each agent has one job, a defined input schema, and a defined output schema. When something goes wrong, the fault is localized to one skill rather than hidden inside a single long prompt.
 
 `apply-all` is the orchestrator, not the brain. It scans the inbox, runs pre-screening, sequences the agents, and assembles the summary. It does not contain job-specific reasoning. That lives in the individual skills.
 
@@ -101,7 +101,7 @@ Three principles shaped the design:
 
 **Two onboarding paths.** `/setup all` walks you through creating all personal files interactively — Claude asks questions and generates the files from your answers. If you prefer to edit files directly, every template in `assets/knowledge_base/` contains instructions at the top explaining what to write and why. Both paths produce the same file structure.
 
-**The pre-screening rules are the first thing to customise.** The auto-skip and flag logic in `apply-all/SKILL.md` Step 1.5 reflects the builder's own search criteria: role type, company type, seniority level, stack gaps. The defaults are a working example, not a prescription. Before running a real batch, review them against your own situation. Getting them wrong in the auto-skip direction is low-cost (you can always process a skipped posting manually). Getting them wrong in the process direction wastes pipeline runs on postings you would have discarded anyway.
+**The pre-screening rules are the first thing to customize.** The auto-skip and flag logic in `apply-all/SKILL.md` Step 1.5 reflects the builder's own search criteria: role type, company type, seniority level, stack gaps. The defaults are a working example, not a prescription. Before running a real batch, review them against your own situation. Getting them wrong in the auto-skip direction is low-cost (you can always process a skipped posting manually). Getting them wrong in the process direction wastes pipeline runs on postings you would have discarded anyway.
 
 ---
 
@@ -239,7 +239,7 @@ Edit `profile.json` → `preferences.min_salary`:
 
 ### Pre-screening rules
 
-In `.claude/skills/apply-all/SKILL.md` → Step 1.5, customise the auto-skip and flag rules. The defaults ship as a working example for one specific search. Review and adjust them before running your first real batch.
+In `.claude/skills/apply-all/SKILL.md` → Step 1.5, customize the auto-skip and flag rules. The defaults ship as a working example for one specific search. Review and adjust them before running your first real batch.
 
 ### Market salary ranges
 
